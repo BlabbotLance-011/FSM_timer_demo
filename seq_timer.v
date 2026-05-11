@@ -4,17 +4,17 @@ module seq_timer(out, timer, state, t, ovr, clk, rst);
 	input rst;
 	input ovr;
 	output reg out;
-	output [2:0] timer;
-	output reg[1:0] state; 
+	output [3:0] timer;
+	output reg[3:0] state; 
 	
 	
 	// state assignment
-	parameter[1:0] S0 = 2'b00;
-	parameter[1:0] S1 = 2'b01;
-	parameter[1:0] S2 = 2'b10;
-	parameter[1:0] S3 = 2'b11;
-	reg[1:0] nxtState;
-	reg[1:0] currState;
+	parameter[3:0] S0 = 4'b0000;
+	parameter[3:0] S1 = 4'b0001;
+	parameter[3:0] S2 = 4'b0010;
+	parameter[3:0] S3 = 4'b0011;
+	reg[3:0] nxtState;
+	reg[3:0] currState;
 	
 	// input block
 	always @(t, ovr, currState) begin
@@ -35,13 +35,11 @@ module seq_timer(out, timer, state, t, ovr, clk, rst);
 		else nxtState <= currState;
 
 		// check timer + state
-		
+		case 
 		
 	
 	end
 	
-	
-	assign timer = t;
 	
 	// output block
 	always @(currState) begin
@@ -73,5 +71,9 @@ module seq_timer(out, timer, state, t, ovr, clk, rst);
 			
 		endcase
 	end
+	
+	
+	assign timer = t;
+	
 	
 endmodule
