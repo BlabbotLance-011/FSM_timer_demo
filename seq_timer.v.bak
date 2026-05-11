@@ -1,0 +1,65 @@
+module seq_timer(out, timer, state, t, clk, rst);
+	input t;
+	input clk;
+	input rst;
+	output reg out;
+	output reg[1:0] state; 
+	
+	// output for 7-seg
+	
+	// state assignment
+	parameter[1:0] S0 = 2'b00;
+	parameter[1:0] S1 = 2'b01;
+	parameter[1:0] S2 = 2'b10;
+	parameter[1:0] S3 = 2'b11;
+	reg[1:0] nxtState;
+	reg[1:0] currState;
+	
+	// input block
+	always @(in, currState) begin
+		case(currState)
+			S0: nxtState = (in==1) ? S1 : S0;
+			S1: nxtState = (in==1) ? S2 : S0;
+			S2: nxtState = (in==1) ? S2 : S3;
+			S3: nxtState = (in==1) ? S4 : S0;
+			S4: nxtState = (in==1) ? S1 : S0;
+		endcase
+	end
+
+	
+	// sequential block
+	// reset input is negative edge-triggered
+	always @(posedge clk, negedge rst) currState = (rst==0) ? S0 : nxtState;
+	
+	// output block
+	always @(currState) begin
+		case(currState)
+			S0: begin
+				out = 0;
+				state = S0;
+			end
+			
+			S1: begin
+				out = 0;
+				state = S1;
+			end
+			
+			S2: begin
+				out = 0;
+				state = S2;
+			end
+			
+			S3: begin
+				out = 0;
+				state = S3;
+			end
+			
+			S4: begin
+				out = 1;
+				state = S4;
+			end
+			
+		endcase
+	end
+	
+endmodule
